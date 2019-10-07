@@ -52,7 +52,7 @@ function subtract(a: number[], b: number[]): number[] {
     if (more(b, a)) throw new Error("Negative values are not supported");
     const res: number[] = [];
     for (let i = 0; i < b.length; i++) res.push(a[i] - b[i]);
-    for (let i = b.length; i < a.length; i++) res.push(a[i]);
+    for (let j = b.length; j < a.length; j++) res.push(a[j]);
     return normalizeNegatives(res);
 }
 
@@ -61,7 +61,7 @@ function sum(a: number[], b: number[]): number[] {
     const shorter = a.length >= b.length ? b : a;
     const res: number[] = [];
     for (let i = 0; i < shorter.length; i++) res.push(a[i] + b[i]);
-    for (let i = shorter.length; i < longer.length; i++) res.push(longer[i]);
+    for (let j = shorter.length; j < longer.length; j++) res.push(longer[j]);
     return normalizeOverflow(res);
 }
 

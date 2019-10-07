@@ -19,6 +19,7 @@
     "@types/crypto-js": "3.1.43",
     "gulp": "4.0.2",
     "gulp-typescript": "5.0.1",
+    "gulp-concat": "2.6.1",
     "through2": "3.0.1"
   }
 }

@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var concat = require('gulp-concat');
 var ts = require('gulp-typescript');
 var through = require('through2');
 
@@ -26,4 +27,10 @@ gulp.task('tsc', function() {
             }
             cb(null, chunk)
         }));
+});
+
+gulp.task('bundle', function () {
+    return gulp.src("build/**/*.js")
+        .pipe(concat("bundle.js"))
+        .pipe(gulp.dest("bundle/"));
 });

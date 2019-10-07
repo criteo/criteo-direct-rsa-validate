@@ -38,7 +38,7 @@ function getMaxLessThan(x: number[], nByPowed2: Array<number[]>) {
 function multByNumber(a: number[], n: number, shift: number = 0): number[] {
     const res: number[] = [];
     for (let i = 0; i < shift; i++) res.push(0);
-    for (let i = 0; i < a.length; i++) res.push(a[i] * n);
+    for (let j = 0; j < a.length; j++) res.push(a[j] * n);
     return normalizeOverflow(res);
 }
 

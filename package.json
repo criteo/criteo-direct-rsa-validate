@@ -16,6 +16,9 @@
     "ts-jest": "^24.1.0",
     "typescript": "^3.6.3",
     "crypto-js": "^3.1.9-1",
-    "@types/crypto-js": "3.1.43"
+    "@types/crypto-js": "3.1.43",
+    "gulp": "4.0.2",
+    "gulp-typescript": "5.0.1",
+    "through2": "3.0.1"
   }
 }

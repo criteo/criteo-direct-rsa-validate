@@ -121,12 +121,17 @@ function bigIntNum(x: number): number[] {
     return res;
 }
 
-function bigIntHexStr(hexStr: string): number[] {
+export function bigIntHexStr(hexStr: string): number[] {
     const chars = hexStr.toLowerCase().split("").reverse();
-    var chunkCount = Math.floor((hexStr.length - 1) / 3) + 1;
+    const chunkCount = Math.floor((hexStr.length - 1) / foundationPow) + 1;
     const res = [];
-    for (let i = 0; i < chunkCount; i++)
-        res.push(getInt(chars, 3 * i) + getInt(chars, 3 * i + 1) * X1 + getInt(chars, 3 * i + 2) * X2);
+    for (let i = 0; i < chunkCount; i++) {
+        let chunkValue = 0;
+        for (let j = 0; j < foundationPow; j++) {
+            chunkValue += getInt(chars, foundationPow * i + j) * foundationParts[j];
+        }
+        res.push(chunkValue);
+    }
     return normalizeNegatives(res);
 }
 
@@ -138,9 +143,18 @@ function getInt(chars: string[], idx: number): number {
 
 export function toHexStr(x: number[]): string {
     let res: number[] = [];
+    let currentPart: number[] = [];
     x.forEach(p => {
-        const p0 = p % X2;
-        res.push(p0 % X1, Math.floor(p0 / X1), Math.floor(p / X2));
+        for (let j = foundationPow - 1; j >= 0; j--) {
+            const part = foundationParts[j];
+            currentPart.push(Math.floor(p / part));
+            p %= part;
+        }
+        res = res.concat(currentPart.reverse());
+        currentPart = [];
+
+        //const p0 = p % X2;
+        //res.push(p0 % X1, Math.floor(p0 / X1), Math.floor(p / X2));
     });
     let i = res.length;
     while (i >= 1) {
@@ -156,6 +170,6 @@ function intToHexLetter(x: number): string {
     return String.fromCharCode(x + (x < 10 ? 48 : 87));
 }
 
-const foundation: number = 4096; // 16^3
-const X1: number = 16;
-const X2: number = 256;
+const foundationPow = 6;
+const foundation: number = Math.pow(16, foundationPow);
+const foundationParts: number[] = Array.from({length: foundationPow}).map((x, idx) => Math.pow(16, idx));

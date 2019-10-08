@@ -3,8 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Test bundle</title>
+    <script src="index.js"></script>
+
 </head>
 <body>
-<div>Page content</div>
+
+<div>Load file to local storage:</div>
+<input type="file" id="file-input" />
+<script type="text/javascript">
+    var lsKey = 'my_ls_key';
+    function readSingleFile(e) {
+        var file = e.target.files[0];
+        if (!file) {
+            return;
+        }
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var contents = e.target.result;
+            localStorage.setItem(lsKey, contents);
+
+        };
+        reader.readAsText(file);
+    }
+    document.getElementById('file-input')
+        .addEventListener('change', readSingleFile, false);
+
+    if(localStorage.getItem('my_ls_key') != null) {
+        globalVerify();
+    }
+</script>
 </body>
 </html>

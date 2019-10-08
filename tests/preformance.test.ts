@@ -1,8 +1,13 @@
+const globalAny:any = global;
+globalAny.navigator = globalAny.navigator || {};
+globalAny.navigator.appName = "Netscape";
+
 import fs from "fs";
 import {SHA256} from "crypto-js";
 import {modPow} from "../src/modPow";
 import {splitHashAndCode} from "../src/inputParser";
 import {b64toHex, mutateHexString, removeExtraSymbols} from "../src/stringCovnerter";
+import {BigInteger} from "../src/jsbnLite";
 
 // PUBLIC KEY INFO
 const e = 65537;
@@ -13,17 +18,27 @@ describe("performance tests", () => {
         for(let i = 50; i <= 65; i++) {
             const text = fs.readFileSync(`tests/testCases/${i}/prod.min.js`).toString();
             const hashAndCode = splitHashAndCode(text);
+            const expected = SHA256(hashAndCode.code).toString();
             const xStr = b64toHex(hashAndCode.hash);
 
             const startTime = process.hrtime();
             const resultStr = modPow(xStr, e, nStr);
             const endTime = process.hrtime(startTime);
-            const actual = removeExtraSymbols(resultStr);
-            const expected = SHA256(hashAndCode.code).toString();
+            let et = null;
+            if (true) {
+                const st = process.hrtime();
+                const x = new BigInteger(xStr);
+                const m = new BigInteger(nStr);
+                const r = x.modPowInt(e, m);
+                const rStr = r.toHexString();
+                et = process.hrtime(st);
+                expect(removeExtraSymbols(rStr)).toBe(expected);
+            }
 
+            const actual = removeExtraSymbols(resultStr);
             expect(actual).toBe(expected);
 
-            console.log(`TestCase(${i}) was in ms ${endTime[1] / 1000000}`);
+            console.log(`TestCase(${i}) was in ms ${endTime[1] / 1000000} - ${(et !== null ? et[1] / 1000000 : "noValue")}`);
         }
     });
 

@@ -1,6 +1,8 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
 var ts = require('gulp-typescript');
+var uglify = require('gulp-uglify');
+var rename = require("gulp-rename");
 var through = require('through2');
 
 gulp.task('tsc', function() {
@@ -33,4 +35,11 @@ gulp.task('bundle', function () {
     return gulp.src("build/**/*.js")
         .pipe(concat("bundle.js"))
         .pipe(gulp.dest("bundle/"));
+});
+
+gulp.task('compress', function (cb) {
+    return gulp.src('bundle/bundle.js')
+        .pipe(uglify())
+        .pipe(rename('bundle.min.js'))
+        .pipe(gulp.dest('bundle/'));
 });

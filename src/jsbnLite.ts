@@ -150,13 +150,13 @@ export class BigInteger {
         if ((x & 1) == 0) {
             return 0;
         }
-        let y = x & 3;		// y == 1/x mod 2^2
-        y = (y * (2 - (x & 0xf) * y)) & 0xf;	// y == 1/x mod 2^4
-        y = (y * (2 - (x & 0xff) * y)) & 0xff;	// y == 1/x mod 2^8
-        y = (y * (2 - (((x & 0xffff) * y) & 0xffff))) & 0xffff;	// y == 1/x mod 2^16
+        let y = x & 3; // y == 1/x mod 2^2
+        y = (y * (2 - (x & 0xf) * y)) & 0xf; // y == 1/x mod 2^4
+        y = (y * (2 - (x & 0xff) * y)) & 0xff; // y == 1/x mod 2^8
+        y = (y * (2 - (((x & 0xffff) * y) & 0xffff))) & 0xffff; // y == 1/x mod 2^16
         // last step - calculate inverse mod DV directly;
         // assumes 16 < DB <= 32 and assumes ability to handle 48-bit ints
-        y = (y * (2 - x * y % this.DV)) % this.DV;		// y == 1/x mod 2^dbits
+        y = (y * (2 - x * y % this.DV)) % this.DV; // y == 1/x mod 2^dbits
         // we really want the negative inverse, and -DV < y < DV
         return (y > 0) ? this.DV - y : -y;
     }
@@ -232,7 +232,7 @@ export class BigInteger {
         const y = nbi();
         const ts = this.s;
         const ms = m.s;
-        const nsh = this.DB - nbits(pm[pm.t - 1]);	// normalize modulus
+        const nsh = this.DB - nbits(pm[pm.t - 1]); // normalize modulus
         if (nsh > 0) {
             pm.lShiftTo(nsh, y);
             pt.lShiftTo(nsh, r);
@@ -258,14 +258,14 @@ export class BigInteger {
             r.subTo(t, r);
         }
         BigInteger.ONE.dlShiftTo(ys, t);
-        t.subTo(y, y);	// "negative" y so we can replace sub with am later
+        t.subTo(y, y); // "negative" y so we can replace sub with am later
         while (y.t < ys) {
             y[y.t++] = 0;
         }
         while (--j >= 0) {
             // Estimate quotient digit
             let qd = (r[--i] == y0) ? this.DM : Math.floor(r[i] * d1 + (r[i - 1] + e) * d2);
-            if ((r[i] += y.am(0, qd, r, j, 0, ys)) < qd) {	// Try it out
+            if ((r[i] += y.am(0, qd, r, j, 0, ys)) < qd) { // Try it out
                 y.dlShiftTo(j, t);
                 r.subTo(t, r);
                 while (r[i] < --qd) {
@@ -545,8 +545,6 @@ export interface IReduction {
 
     revert(x:BigInteger):BigInteger;
 
-    // reduce?(x:BigInteger):void;
-
     mulTo(x:BigInteger, y:BigInteger, r:BigInteger):void;
 
     sqrTo(x:BigInteger, r:BigInteger):void;
@@ -565,18 +563,15 @@ class Classic implements IReduction {
         }
     }
 
-
     // Classic.prototype.revert = cRevert;
     public revert(x:BigInteger) {
         return x;
     }
 
-
     // Classic.prototype.reduce = cReduce;
     public reduce(x:BigInteger) {
         x.divRemTo(this.m, null, x);
     }
-
 
     // Classic.prototype.mulTo = cMulTo;
     public mulTo(x:BigInteger, y:BigInteger, r:BigInteger) {
@@ -654,14 +649,12 @@ class Montgomery implements IReduction {
         }
     }
 
-
     // Montgomery.prototype.mulTo = montMulTo;
     // r = "xy/R mod m"; x,y != r
     public mulTo(x:BigInteger, y:BigInteger, r:BigInteger) {
         x.multiplyTo(y, r);
         this.reduce(r);
     }
-
 
     // Montgomery.prototype.sqrTo = montSqrTo;
     // r = "x^2/R mod m"; x != r
@@ -679,11 +672,6 @@ export function nbv(i:number) {
 
 BigInteger.ZERO = nbv(0);
 BigInteger.ONE = nbv(1);
-
-// am1: use a single mult and divide to get the high bits,
-// max digit bits should be 26 because
-// max internal value = 2*dvalue^2-2*dvalue (< 2^53)
-
 
 if (j_lm && (navigator.appName == "Microsoft Internet Explorer")) {
     BigInteger.prototype.am = BigInteger.prototype.am2;

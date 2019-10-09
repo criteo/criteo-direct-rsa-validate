@@ -4,8 +4,9 @@ var ts = require('gulp-typescript');
 var uglify = require('gulp-uglify');
 var rename = require("gulp-rename");
 var through = require('through2');
+var clean = require("gulp-clean");
 
-gulp.task('tsc', function() {
+gulp.task('build', function() {
     var tsProject = ts.createProject('./tsconfig.json');
 
     var typescript_error_count = 0;
@@ -22,7 +23,7 @@ gulp.task('tsc', function() {
             }
         }));
 
-    return tsResult.js.pipe(gulp.dest('build'))
+    return tsResult.js.pipe(gulp.dest('build/'))
         .pipe(through.obj(function (chunk, enc, cb) {
             if (typescript_error_count) {
                 this.emit("error", "TypeScript compile errors (count:" + typescript_error_count + ")");
@@ -43,3 +44,15 @@ gulp.task('compress', function (cb) {
         .pipe(rename('bundle.min.js'))
         .pipe(gulp.dest('bundle/'));
 });
+
+gulp.task('clean_build', function () {
+    return gulp.src('build/', {read: false})
+        .pipe(clean());
+});
+
+gulp.task('clean_bundle', function () {
+    return gulp.src('bundle/', {read: false})
+        .pipe(clean());
+});
+
+gulp.task('default', gulp.series('clean_build', 'build', 'clean_bundle', 'bundle', 'compress', (done) => {done();}));

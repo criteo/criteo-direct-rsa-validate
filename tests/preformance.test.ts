@@ -1,8 +1,7 @@
-import {splitHashAndCode} from "../src/verify";
 import fs from "fs";
 import {SHA256} from "crypto-js";
 import {b64toHex, BigInteger, removeExtraSymbols} from "../src/jsbnLite";
-import {mutateHexString} from "./testHelpers";
+import {mutateHexString, splitHashAndCode} from "./testHelpers";
 
 // PUBLIC KEY INFO
 const e = 65537;

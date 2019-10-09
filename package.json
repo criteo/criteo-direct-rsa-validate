@@ -1,13 +1,16 @@
 {
-  "name": "modpow",
+  "name": "rsa-signature-verify-lite-3",
   "version": "0.0.1",
-  "description": "simple implementation of mod pow",
-  "main": "index.js",
+  "description": "Specific function to verify RSA signature, which is made by RSA-256",
+  "main": "build/verify.js",
+  "files": [
+    "build/"
+  ],
   "scripts": {
     "test": "jest",
     "coverage": "jest --coverage"
   },
-  "author": "",
+  "author": "Fatality",
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^24.0.18",
@@ -22,6 +25,7 @@
     "gulp-concat": "2.6.1",
     "gulp-uglify": "3.0.2",
     "gulp-rename": "1.4.0",
+    "gulp-clean": "0.4.0",
     "through2": "3.0.1",
     "build": "^0.1.4"
   }

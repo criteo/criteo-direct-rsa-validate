@@ -1,31 +1,47 @@
-import {splitHashAndCode} from "./inputParser";
-import {b64toHex, removeExtraSymbols} from "./stringCovnerter";
-import {modPow} from "./modPow";
 import {SHA256} from "crypto-js";
+import {b64toHex, BigInteger, removeExtraSymbols} from "./jsbnLite";
 
-const e = 65537;
-const nStr = "ced418c02139054ed3f420cce617baacaa1a6ecb57466933c79e3314f66459b2b9df4770b4b04379a5813311c1513e79098c9ba11fc467879f8213e2dc2a0d19f1967b3a63928f4fea9d84c0602bb4711e4b8b2586efd2a522053231ba7ddae946836e200321ab567e3ebffe1ce775a5384529e185af6fcd86d020f935c0cda5";
+// todo: remove for-loop & console.log()
+export function verify(text: string, nStrPubKey: string, ePubKey: number, tryCount: number = 1): boolean {
+    const splitResult = splitHashAndCode(text);
+    const xStr = b64toHex(splitResult.hash);
+    let spentSum = 0;
+    let resultStr = "";
+    for(let i = 0; i < tryCount; i++) {
+        const startTime = performance.now();
 
-export function verify() {
-    const text = readValueFromLocalStorage();
-    const hashAndCode = splitHashAndCode(text);
-    const xStr = b64toHex(hashAndCode.hash);
-    const startTime = performance.now();
-    const resultStr = modPow(xStr, e, nStr);
-    const endTime = performance.now();
+        const x = new BigInteger(xStr);
+        const m = new BigInteger(nStrPubKey);
+        const r = x.modPowInt(ePubKey, m);
+        resultStr = r.toHexString();
+
+        const endTime = performance.now();
+        const spent = endTime - startTime;
+        spentSum += spent;
+        console.log(`Try #${i}, spent: ${endTime - startTime} ms`);
+    }
+
     const actual = removeExtraSymbols(resultStr);
-    const expected = SHA256(hashAndCode.code).toString();
+    const expected = SHA256(splitResult.code).toString();
 
-    console.log(`Verify result: ${(actual === expected ? "OK" : "FAIL")} was in ms ${endTime - startTime}`);
+    let isSourceCodeValid = actual === expected;
+    console.log(`Verify result: ${(isSourceCodeValid ? "OK" : "FAIL")} spent average: ${spentSum / tryCount} in ${tryCount} tries`);
+    return isSourceCodeValid;
 }
 
-function readValueFromLocalStorage(): string {
-    let lsKey = 'my_ls_key';
-    let lsValue: string | null = localStorage.getItem(lsKey);
-    if (lsValue === null) {
-        throw new Error("Local Storage is empty");
-    } else {
-        console.log("Read from Local Storage was successful.")
+// todo: add checks for invalid size string or nulls!
+export function splitHashAndCode(text: string): {hash: string, code: string} {
+    const firstLineEnd = text.indexOf('\n');
+    const firstLine = text.substr(0, firstLineEnd).trim();
+    if (firstLine.substr(0, 9) !== '// Hash: ') {
+        throw new Error('No hash found in FastBid');
     }
-    return lsValue;
+
+    const hash = firstLine.substr(9);
+    const code = text.substr(firstLineEnd + 1);
+
+    return {
+        hash: hash,
+        code: code,
+    };
 }

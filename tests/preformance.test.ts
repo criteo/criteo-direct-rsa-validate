@@ -1,9 +1,4 @@
 import {splitHashAndCode} from "../src/verify";
-
-const globalAny:any = global;
-globalAny.navigator = globalAny.navigator || {};
-globalAny.navigator.appName = "Netscape";
-
 import fs from "fs";
 import {SHA256} from "crypto-js";
 import {b64toHex, BigInteger, removeExtraSymbols} from "../src/jsbnLite";
@@ -50,7 +45,7 @@ describe("performance tests", () => {
             const et = process.hrtime(st);
 
             const actual = removeExtraSymbols(rStr);
-            expect(actual === expected).toBe(true);
+            expect(actual === expected).toBe(false);
 
             console.log(`TestCase(${i}) was in ms ${et[1] / 1000000}`);
         }

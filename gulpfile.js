@@ -7,7 +7,7 @@ var through = require('through2');
 var clean = require("gulp-clean");
 
 function removeBuildFolder() {
-    return gulp.src('build/', {read: false})
+    return gulp.src('build/', {read: false, allowEmpty: true})
         .pipe(clean());
 }
 
@@ -40,7 +40,7 @@ function buildTypeScript() {
 gulp.task('build', gulp.series(removeBuildFolder, buildTypeScript, (done) => done()));
 
 function removeBundleFolder() {
-    return gulp.src('bundle/', {read: false})
+    return gulp.src('bundle/', {read: false, allowEmpty: true})
         .pipe(clean());
 }
 

@@ -1,6 +1,6 @@
 export class Sha256 {
-    public static hash(msg: string): string {
-        msg = Sha256.utf8Encode(msg);
+    public static hash(msg: string | null | undefined): string {
+        msg = Sha256.utf8Encode(msg || "");
 
         const K = [
             0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
@@ -74,7 +74,7 @@ export class Sha256 {
 
     private static utf8Encode(str: string): string {
         try {
-            return new TextEncoder().encode(str/*, 'utf-8'*/).reduce((prev, curr) => prev + String.fromCharCode(curr), '');
+            return new TextEncoder().encode(str).reduce((prev, curr) => prev + String.fromCharCode(curr), '');
         } catch (e) {
             return unescape(encodeURIComponent(str));
         }

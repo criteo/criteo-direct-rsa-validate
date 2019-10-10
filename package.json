@@ -1,6 +1,6 @@
 {
   "name": "rsa-signature-verify-lite-3",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Specific function to verify RSA signature, which is made by RSA-256",
   "main": "build/verify.js",
   "files": [
@@ -10,7 +10,7 @@
     "test": "jest",
     "coverage": "jest --coverage"
   },
-  "author": "Fatality",
+  "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^24.0.18",

@@ -6,7 +6,12 @@ var rename = require("gulp-rename");
 var through = require('through2');
 var clean = require("gulp-clean");
 
-gulp.task('build', function() {
+function removeBuildFolder() {
+    return gulp.src('build/', {read: false})
+        .pipe(clean());
+}
+
+function buildTypeScript() {
     var tsProject = ts.createProject('./tsconfig.json');
 
     var typescript_error_count = 0;
@@ -30,29 +35,26 @@ gulp.task('build', function() {
             }
             cb(null, chunk)
         }));
-});
+}
 
-gulp.task('bundle', function () {
+gulp.task('build', gulp.series(removeBuildFolder, buildTypeScript, (done) => done()));
+
+function removeBundleFolder() {
+    return gulp.src('bundle/', {read: false})
+        .pipe(clean());
+}
+
+function makeBundle() {
     return gulp.src("build/**/*.js")
         .pipe(concat("bundle.js"))
         .pipe(gulp.dest("bundle/"));
-});
+}
 
-gulp.task('compress', function (cb) {
+function compressBundle() {
     return gulp.src('bundle/bundle.js')
         .pipe(uglify())
         .pipe(rename('bundle.min.js'))
         .pipe(gulp.dest('bundle/'));
-});
+}
 
-gulp.task('clean_build', function () {
-    return gulp.src('build/', {read: false})
-        .pipe(clean());
-});
-
-gulp.task('clean_bundle', function () {
-    return gulp.src('bundle/', {read: false})
-        .pipe(clean());
-});
-
-gulp.task('default', gulp.series('clean_build', 'build', 'clean_bundle', 'bundle', 'compress', (done) => {done();}));
+gulp.task('createBundle', gulp.series(removeBundleFolder, makeBundle, compressBundle, (done) => done()));

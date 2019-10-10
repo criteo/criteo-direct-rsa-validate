@@ -1,6 +1,6 @@
 {
   "name": "rsa-signature-verify-lite-3",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Specific function to verify RSA signature, which is made by RSA-256",
   "main": "build/verify.js",
   "files": [

@@ -38,23 +38,3 @@ function buildTypeScript() {
 }
 
 gulp.task('build', gulp.series(removeBuildFolder, buildTypeScript, (done) => done()));
-
-function removeBundleFolder() {
-    return gulp.src('bundle/', {read: false, allowEmpty: true})
-        .pipe(clean());
-}
-
-function makeBundle() {
-    return gulp.src("build/**/*.js")
-        .pipe(concat("bundle.js"))
-        .pipe(gulp.dest("bundle/"));
-}
-
-function compressBundle() {
-    return gulp.src('bundle/bundle.js')
-        .pipe(uglify())
-        .pipe(rename('bundle.min.js'))
-        .pipe(gulp.dest('bundle/'));
-}
-
-gulp.task('createBundle', gulp.series(removeBundleFolder, makeBundle, compressBundle, (done) => done()));

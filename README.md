@@ -1,10 +1,12 @@
 # criteo-direct-rsa-validate
 
 A lightweight RSA validation library.
-Forked on https://github.com/travist/jsencrypt
+Forked on <https://github.com/travist/jsencrypt>
 
-License
+## License
+
 This project is licensed under the Apache 2.0 license.
 
-Copyright
+## Copyright
+
 Copyright © Criteo, 2019

@@ -1,7 +1,7 @@
 {
-  "name": "rsa-signature-verify-lite-3",
-  "version": "0.0.5",
-  "description": "Specific function to verify RSA signature, which is made by RSA-256",
+  "name": "criteo-direct-rsa-validate",
+  "version": "1.0",
+  "description": "A lightweight RSA signature validation library",
   "main": "build/verify.js",
   "files": [
     "build/"
@@ -10,8 +10,6 @@
     "test": "jest",
     "coverage": "jest --coverage"
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.11",
@@ -28,5 +26,10 @@
     "gulp-clean": "0.4.0",
     "through2": "3.0.1",
     "build": "^0.1.4"
+  },
+  "license": "Apache 2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/criteo/criteo-direct-rsa-validate"
   }
 }

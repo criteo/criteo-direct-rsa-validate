@@ -1,6 +1,6 @@
 {
   "name": "criteo-direct-rsa-validate",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "A lightweight RSA signature validation library",
   "main": "build/verify.js",
   "files": [
@@ -10,26 +10,26 @@
     "test": "jest",
     "coverage": "jest --coverage"
   },
-  "devDependencies": {
-    "@types/jest": "^24.0.18",
-    "@types/node": "^12.7.11",
-    "jest": "^24.9.0",
-    "ts-jest": "^24.1.0",
-    "typescript": "^3.6.3",
-    "crypto-js": "^3.1.9-1",
-    "@types/crypto-js": "3.1.43",
-    "gulp": "4.0.2",
-    "gulp-typescript": "5.0.1",
-    "gulp-concat": "2.6.1",
-    "gulp-uglify": "3.0.2",
-    "gulp-rename": "1.4.0",
-    "gulp-clean": "0.4.0",
-    "through2": "3.0.1",
-    "build": "^0.1.4"
-  },
+  "author": "Criteo <npmjs@criteo.com> (https://www.criteo.com)",
   "license": "Apache 2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/criteo/criteo-direct-rsa-validate"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^3.1.43",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.12.14",
+    "crypto-js": "^3.1.9-1",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-uglify": "^3.0.2",
+    "jest": "^24.9.0",
+    "through2": "3.0.1",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.7.2"
   }
 }
